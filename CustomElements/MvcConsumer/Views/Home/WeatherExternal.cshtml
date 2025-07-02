@@ -1,0 +1,29 @@
+﻿@using System.Text.Json
+
+@model WeatherViewModel
+
+@{
+    ViewData["Title"] = "Weather";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://localhost:44345/app.css" />
+}
+
+@section Scripts {
+    <script src="https://localhost:44345/app.js" autostart="false"></script>
+    <script>
+        blazorWasm.start().then(() => {
+            const weather = document.createElement("wasm-weather");
+            weather.forecasts = @Html.Raw(JsonSerializer.Serialize(Model.Data));
+            document.getElementById("weather-container").append(weather);
+        });
+    </script>
+}
+
+<h1>@ViewData["Title"]</h1>
+<h2>External data</h2>
+
+<p>This page renders a weather component implemented as Blazor custom element.</p>
+<p>Data is loaded on consumer's side using server's public API and passed to custom element via its property (component parameter).</p>
+<div id="weather-container" class="component-container"></div>
