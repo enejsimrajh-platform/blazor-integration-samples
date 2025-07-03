@@ -11,12 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents()
-    .AddAuthenticationStateSerialization();
+    .AddInteractiveServerComponents();
 
+var allowedOrigins = builder.Configuration["AllowedOrigins"]
+    ?? throw new InvalidOperationException("Missing 'AllowedOrigins' configuration value.");
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(builder => builder
-        .WithOrigins("https://localhost:44391")
+        .WithOrigins(allowedOrigins.Split(";"))
         .WithHeaders("x-requested-with")
         .AllowCredentials()));
 

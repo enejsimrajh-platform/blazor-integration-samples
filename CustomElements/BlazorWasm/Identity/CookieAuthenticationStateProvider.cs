@@ -29,7 +29,7 @@ namespace BlazorWasm.Identity
         /// <summary>
         /// Special server client.
         /// </summary>
-        private readonly HttpClient httpClient = httpClientFactory.CreateClient("Server");
+        private readonly HttpClient http = httpClientFactory.CreateClient("Host");
 
         /// <summary>
         /// Authentication state.
@@ -59,7 +59,7 @@ namespace BlazorWasm.Identity
             try
             {
                 // the user info endpoint is secured, so if the user isn't logged in this will fail
-                using var userResponse = await httpClient.GetAsync("manage/info");
+                using var userResponse = await http.GetAsync("manage/info");
 
                 // throw if user info wasn't retrieved
                 userResponse.EnsureSuccessStatusCode();
@@ -83,7 +83,7 @@ namespace BlazorWasm.Identity
                             .Select(c => new Claim(c.Key, c.Value)));
 
                     // request the roles endpoint for the user's roles
-                    using var rolesResponse = await httpClient.GetAsync("manage/roles");
+                    using var rolesResponse = await http.GetAsync("manage/roles");
 
                     // throw if request fails
                     rolesResponse.EnsureSuccessStatusCode();

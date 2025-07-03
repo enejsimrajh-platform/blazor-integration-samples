@@ -36,12 +36,18 @@ else
 }
 
 @code {
-    [Parameter] public WeatherForecast[]? Forecasts { get; set; }
+    private HttpClient http = default!;
 
     private WeatherForecast[]? forecasts;
+    [Parameter] public WeatherForecast[]? Forecasts { get; set; }
+
+    protected override void OnInitialized()
+    {
+        http = HttpFactory.CreateClient("Host");
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = Forecasts ?? await HttpFactory.CreateClient("Server").GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        forecasts = Forecasts ?? await http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
     }
 }

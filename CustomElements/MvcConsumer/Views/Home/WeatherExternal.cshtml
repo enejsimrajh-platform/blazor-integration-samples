@@ -3,15 +3,12 @@
 @model WeatherViewModel
 
 @{
+    Layout = "~/Views/Shared/_BlazorLayout.cshtml";
     ViewData["Title"] = "Weather";
-}
-
-@section Styles {
-    <link rel="stylesheet" href="https://localhost:44345/app.css" />
+    ViewData["Blazor:Autostart"] = "false";
 }
 
 @section Scripts {
-    <script src="https://localhost:44345/app.js" autostart="false"></script>
     <script>
         blazorWasm.start().then(() => {
             const weather = document.createElement("wasm-weather");

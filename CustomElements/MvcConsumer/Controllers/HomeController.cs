@@ -7,12 +7,10 @@ namespace MvcConsumer.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly HttpClient _http;
 
-    public HomeController(ILogger<HomeController> logger, HttpClient http)
+    public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
-        _http = http;
     }
 
     public IActionResult Index()
@@ -35,9 +33,10 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> WeatherExternal()
+    public async Task<IActionResult> WeatherExternal([FromServices] IHttpClientFactory httpFactory)
     {
-        var weatherForecasts = await _http.GetFromJsonAsync<WeatherViewModel.WeatherForecast[]>("WeatherForecast");
+        var http = httpFactory.CreateClient("Blazor");
+        var weatherForecasts = await http.GetFromJsonAsync<WeatherViewModel.WeatherForecast[]>("WeatherForecast");
         return View(new WeatherViewModel { Data = weatherForecasts });
     }
 

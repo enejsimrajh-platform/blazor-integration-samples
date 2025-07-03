@@ -3,7 +3,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44345/") });
+var blazorUrl = builder.Configuration["BlazorUrl"]
+    ?? throw new InvalidOperationException("Missing 'BlazorUrl' configuration value.");
+builder.Services.AddHttpClient("Blazor", client =>
+    {
+        client.BaseAddress = new Uri(blazorUrl);
+    });
 
 var app = builder.Build();
 

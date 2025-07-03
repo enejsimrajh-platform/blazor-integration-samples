@@ -12,14 +12,14 @@ builder.RootComponents.RegisterCustomElement<Auth>("wasm-auth");
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddAuthenticationStateDeserialization();
-
 builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthenticationStateProvider>();
 
 builder.Services.AddTransient<CookieHandler>();
-builder.Services.AddHttpClient("Server", client =>
+var host = builder.Configuration["Host"]
+    ?? throw new InvalidOperationException("Missing 'Host' configuration value.");
+builder.Services.AddHttpClient("Host", client =>
     {
-        client.BaseAddress = new Uri("https://localhost:44345/");
+        client.BaseAddress = new(host);
     })
     .AddHttpMessageHandler<CookieHandler>();
 
