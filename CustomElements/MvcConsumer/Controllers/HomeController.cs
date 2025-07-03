@@ -41,6 +41,11 @@ public class HomeController : Controller
         return View(new WeatherViewModel { Data = weatherForecasts });
     }
 
+    public IActionResult Auth()
+    {
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

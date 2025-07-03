@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Auth";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://localhost:44345/app.css" />
+}
+
+@section Scripts {
+    <script src="https://localhost:44345/app.js"></script>
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>This page renders an authorized component implemented as Blazor custom element.</p>
+
+<div class="component-container">
+    <wasm-auth></wasm-auth>
+</div>
