@@ -14,4 +14,8 @@
 	<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.6" />
   </ItemGroup>
 
+  <PropertyGroup>
+	<StaticWebAssetBasePath>BlazorWasm</StaticWebAssetBasePath>
+  </PropertyGroup>
+
 </Project>

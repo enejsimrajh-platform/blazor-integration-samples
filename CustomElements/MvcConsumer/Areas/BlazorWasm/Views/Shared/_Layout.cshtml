@@ -1,0 +1,20 @@
+﻿@inject IConfiguration Configuration
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <base href="/BlazorWasm/" />
+}
+
+@section Styles {
+    <link rel="stylesheet" href="app.css" />
+}
+
+@section Scripts {
+    <script src="_framework/blazor.webassembly.js" autostart="@ViewData["Blazor:Autostart"]"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+}
+
+@RenderBody()

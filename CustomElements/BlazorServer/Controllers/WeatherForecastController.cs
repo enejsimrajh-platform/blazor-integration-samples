@@ -1,11 +1,10 @@
 using BlazorWasm.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServer.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class WeatherForecastController(ILogger<WeatherForecastController> logger) : ControllerBase
 {
     private static readonly string[] Summaries =
@@ -16,7 +15,6 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     private readonly ILogger<WeatherForecastController> _logger = logger;
 
     [HttpGet]
-    [AllowAnonymous]
     public IEnumerable<WeatherForecast> Get()
     {
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast

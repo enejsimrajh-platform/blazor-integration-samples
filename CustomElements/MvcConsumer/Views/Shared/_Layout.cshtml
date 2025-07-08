@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MvcConsumer</title>
-    <base href="/" />
+    @await RenderSectionAsync("Head", required: false)
     <script type="importmap"></script>
     @await RenderSectionAsync("Styles", required: false)
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -29,16 +29,16 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Counter">Counter</a>
+                            <a class="nav-link text-dark" asp-area="BlazorWasm" asp-controller="Home" asp-action="Counter">Counter</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="WeatherEncapsulated">Weather (encapsulated)</a>
+                            <a class="nav-link text-dark" asp-area="BlazorWasm" asp-controller="Home" asp-action="WeatherEncapsulated">Weather (encapsulated)</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="WeatherExternal">Weather (external)</a>
+                            <a class="nav-link text-dark" asp-area="BlazorWasm" asp-controller="Home" asp-action="WeatherExternal">Weather (external)</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Auth">Auth</a>
+                            <a class="nav-link text-dark" asp-area="BlazorWasm" asp-controller="Home" asp-action="Auth">Auth</a>
                         </li>
                     </ul>
                 </div>

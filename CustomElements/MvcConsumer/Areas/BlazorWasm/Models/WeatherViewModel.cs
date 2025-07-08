@@ -1,4 +1,4 @@
-namespace MvcConsumer.Models;
+namespace MvcConsumer.Areas.BlazorWasm.Models;
 
 public class WeatherViewModel
 {

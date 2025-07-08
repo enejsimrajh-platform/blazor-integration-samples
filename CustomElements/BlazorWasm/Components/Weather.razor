@@ -43,11 +43,11 @@ else
 
     protected override void OnInitialized()
     {
-        http = HttpFactory.CreateClient("Host");
+        http = HttpFactory.CreateClient("Auth");
     }
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = Forecasts ?? await http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        forecasts = Forecasts ?? await http.GetFromJsonAsync<WeatherForecast[]>("api/WeatherForecast");
     }
 }

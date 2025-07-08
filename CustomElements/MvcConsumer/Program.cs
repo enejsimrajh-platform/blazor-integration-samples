@@ -5,10 +5,7 @@ builder.Services.AddControllersWithViews();
 
 var blazorUrl = builder.Configuration["BlazorUrl"]
     ?? throw new InvalidOperationException("Missing 'BlazorUrl' configuration value.");
-builder.Services.AddHttpClient("Blazor", client =>
-    {
-        client.BaseAddress = new Uri(blazorUrl);
-    });
+builder.Services.AddHttpClient("Blazor", client => client.BaseAddress = new Uri(blazorUrl));
 
 var app = builder.Build();
 
@@ -26,6 +23,11 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+app.MapAreaControllerRoute(
+    name: "blazorwasm",
+    areaName: "BlazorWasm",
+    pattern: "BlazorWasm/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

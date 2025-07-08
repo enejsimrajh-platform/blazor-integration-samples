@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BlazorWasm.Components;
 using BlazorWasm.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -14,13 +14,10 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthenticationStateProvider>();
 
-builder.Services.AddTransient<CookieHandler>();
-var host = builder.Configuration["Host"]
-    ?? throw new InvalidOperationException("Missing 'Host' configuration value.");
-builder.Services.AddHttpClient("Host", client =>
-    {
-        client.BaseAddress = new(host);
-    })
+var baseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+builder.Services.AddScoped<HttpClient>(sp => new() { BaseAddress = baseAddress });
+builder.Services.AddScoped<CookieHandler>();
+builder.Services.AddHttpClient("Auth", client => client.BaseAddress = baseAddress)
     .AddHttpMessageHandler<CookieHandler>();
 
 await builder.Build().RunAsync();

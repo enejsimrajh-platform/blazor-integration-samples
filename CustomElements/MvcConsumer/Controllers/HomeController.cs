@@ -23,28 +23,6 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Counter()
-    {
-        return View();
-    }
-
-    public IActionResult WeatherEncapsulated()
-    {
-        return View();
-    }
-
-    public async Task<IActionResult> WeatherExternal([FromServices] IHttpClientFactory httpFactory)
-    {
-        var http = httpFactory.CreateClient("Blazor");
-        var weatherForecasts = await http.GetFromJsonAsync<WeatherViewModel.WeatherForecast[]>("WeatherForecast");
-        return View(new WeatherViewModel { Data = weatherForecasts });
-    }
-
-    public IActionResult Auth()
-    {
-        return View();
-    }
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

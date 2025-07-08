@@ -14,9 +14,11 @@ namespace BlazorWasm.Identity
     /// Create a new instance of the auth provider.
     /// </remarks>
     /// <param name="httpClientFactory">Factory to retrieve auth client.</param>
-    public class CookieAuthenticationStateProvider(IHttpClientFactory httpClientFactory, ILogger<CookieAuthenticationStateProvider> logger)
+    public class CookieAuthenticationStateProvider(IHttpClientFactory httpFactory, ILogger<CookieAuthenticationStateProvider> logger)
         : AuthenticationStateProvider
     {
+        private readonly HttpClient http = httpFactory.CreateClient("Auth");
+
         /// <summary>
         /// Map the JavaScript-formatted properties to C#-formatted classes.
         /// </summary>
@@ -25,11 +27,6 @@ namespace BlazorWasm.Identity
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-
-        /// <summary>
-        /// Special server client.
-        /// </summary>
-        private readonly HttpClient http = httpClientFactory.CreateClient("Host");
 
         /// <summary>
         /// Authentication state.
@@ -59,7 +56,7 @@ namespace BlazorWasm.Identity
             try
             {
                 // the user info endpoint is secured, so if the user isn't logged in this will fail
-                using var userResponse = await http.GetAsync("manage/info");
+                using var userResponse = await http.GetAsync("api/account/manage/info");
 
                 // throw if user info wasn't retrieved
                 userResponse.EnsureSuccessStatusCode();
@@ -83,7 +80,7 @@ namespace BlazorWasm.Identity
                             .Select(c => new Claim(c.Key, c.Value)));
 
                     // request the roles endpoint for the user's roles
-                    using var rolesResponse = await http.GetAsync("manage/roles");
+                    using var rolesResponse = await http.GetAsync("api/account/manage/roles");
 
                     // throw if request fails
                     rolesResponse.EnsureSuccessStatusCode();

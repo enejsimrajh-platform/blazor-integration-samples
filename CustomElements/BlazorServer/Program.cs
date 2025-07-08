@@ -13,14 +13,6 @@ builder.Services.AddControllers();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var allowedOrigins = builder.Configuration["AllowedOrigins"]
-    ?? throw new InvalidOperationException("Missing 'AllowedOrigins' configuration value.");
-builder.Services.AddCors(options =>
-    options.AddDefaultPolicy(builder => builder
-        .WithOrigins(allowedOrigins.Split(";"))
-        .WithHeaders("x-requested-with")
-        .AllowCredentials()));
-
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
@@ -32,12 +24,6 @@ builder.Services.AddAuthentication(options =>
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
     })
     .AddIdentityCookies();
-
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.SameSite = SameSiteMode.None;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -60,6 +46,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    app.UseWebAssemblyDebugging();
 }
 else
 {
@@ -69,8 +56,6 @@ else
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -85,8 +70,9 @@ app.MapControllers()
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-app.MapIdentityApi<ApplicationUser>();
-// Add additional endpoints required by the Identity /Account Razor components and cookie authentication.
-app.MapAdditionalIdentityEndpoints();
+var accountGroup = app.MapGroup("/api/account");
+accountGroup.MapIdentityApi<ApplicationUser>();
+// Add additional endpoints required by the Identity /Account Razor components.
+accountGroup.MapAdditionalIdentityEndpoints();
 
 app.Run();
